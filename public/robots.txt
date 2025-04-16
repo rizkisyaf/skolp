@@ -1,0 +1,10 @@
+# Allow all friendly crawlers
+User-agent: *
+Allow: /
+
+# Disallow specific crawlers if needed (example)
+# User-agent: BadBot
+# Disallow: /
+
+# Specify the location of the sitemap
+Sitemap: ${process.env.NEXT_PUBLIC_SITE_URL || 'https://skolp.com'}/sitemap.xml 

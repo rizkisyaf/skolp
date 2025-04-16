@@ -1,0 +1,24 @@
+{
+    "name": "Skolp - Instantly Create MCP Tools from Any API",
+    "short_name": "Skolp",
+    "description": "Skolp scans your API code, lets you select endpoints, and generates ready-to-use bridge packages for LLMs and agents.",
+    "icons": [
+      {
+        "src": "/logo.svg",
+        "sizes": "192x192",
+        "type": "image/svg+xml",
+        "purpose": "any maskable"
+      },
+      {
+        "src": "/logo.svg",
+        "sizes": "512x512",
+        "type": "image/svg+xml",
+        "purpose": "any maskable"
+      }
+    ],
+    "theme_color": "#3E3E3E",
+    "background_color": "#3E3E3E",
+    "start_url": "/",
+    "display": "standalone",
+    "orientation": "portrait"
+  } 
