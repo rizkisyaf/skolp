@@ -6,135 +6,231 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Check, X } from "lucide-react"; // Import icons
 
-// Pricing Data (Keep the detailed data, we'll map it)
-const pricingTiers = [
-  {
-    planName: "Free",
-    price: "$0",
-    priceFrequency: "forever",
-    description: "Perfect for trying out Skolp\'s core functionality on public projects.",
-    ctaLabel: "Get Started for Free",
-    ctaLink: process.env.NEXT_PUBLIC_APP_LOGIN_URL || "https://app.skolp.com/api/auth/login/github",
-    isPopular: false,
-    features: {
-      reposScanned: "1-2 public/month",
-      endpointsPerBridge: "5-10",
-      bridgeGenerations: "1-3/month",
-      privateRepos: false,
-      targetUrlConfig: "Manual code edit",
-      history: "None",
-      customToolNames: false,
-      priorityGeneration: false,
-      support: "Community",
-      customTemplates: false,
-      teamManagement: false,
-      sla: false,
-      onPremise: false,
-      customIntegrations: false,
+// New pricing data structure
+const pricingData = {
+  "plans": ["free", "hobby", "professional", "enterprise"],
+  "features": [
+    {
+      "feature": "Price",
+      "description": "Monthly cost per user.",
+      "values": {
+        "free": "$0 forever",
+        "hobby": "$9 / month",
+        "professional": "$27 / month",
+        "enterprise": "Custom"
+      }
+    },
+    {
+      "feature": "Repositories Scanned",
+      "description": "Maximum number of unique GitHub repositories scanned per month.",
+      "values": {
+        "free": "2 public / month",
+        "hobby": "10 public & private / month",
+        "professional": "50 public & private / month",
+        "enterprise": "Custom / Unlimited"
+      }
+    },
+    {
+      "feature": "Max Endpoints per Bridge",
+      "description": "Maximum number of endpoints allowed in a single generated bridge package.",
+      "values": {
+        "free": "50",
+        "hobby": "500",
+        "professional": "2000",
+        "enterprise": "Custom / Unlimited"
+      }
+    },
+    {
+      "feature": "Bridge Generations",
+      "description": "Maximum number of bridge packages generated per month.",
+      "values": {
+        "free": "3 / month",
+        "hobby": "10 / month",
+        "professional": "50 / month",
+        "enterprise": "Custom / Unlimited"
+      }
+    },
+     {
+      "feature": "GitHub Account Connection",
+      "description": "Ability to connect your GitHub account via OAuth.",
+      "values": {
+        "free": "✓",
+        "hobby": "✓",
+        "professional": "✓",
+        "enterprise": "✓"
+      }
+    },
+    {
+      "feature": "Private Repository Support",
+      "description": "Ability to scan private repositories (requires GitHub connection).",
+      "values": {
+        "free": "✕",
+        "hobby": "✓",
+        "professional": "✓",
+        "enterprise": "✓"
+      }
+    },
+    {
+      "feature": "Target API URL Configuration",
+      "description": "How the target API base URL is configured for generated bridges.",
+       "values": {
+        "free": "Manual code edit",
+        "hobby": "In Skolp UI",
+        "professional": "In Skolp UI",
+        "enterprise": "In Skolp UI"
+      }
+    },
+    {
+      "feature": "Generation History Access",
+      "description": "View past generated packages.",
+      "values": {
+        "free": "✓ (List view)",
+        "hobby": "✓ (List view)",
+        "professional": "✓ (List view + File Viewing)",
+        "enterprise": "✓ (Extended / Custom)"
+      }
+    },
+     {
+      "feature": "View Generated Files",
+      "description": "Ability to browse the contents of generated packages within the app.",
+      "values": {
+        "free": "✕",
+        "hobby": "✕",
+        "professional": "✓",
+        "enterprise": "✓"
+      }
+    },
+    {
+      "feature": "Customizable Tool Names",
+      "description": "Customize the names of generated MCP tools.",
+      "values": {
+        "free": "✕",
+        "hobby": "✕",
+        "professional": "✓",
+        "enterprise": "✓"
+      }
+    },
+    {
+      "feature": "Priority Generation Queue",
+      "description": "Generated packages are built faster.",
+      "values": {
+        "free": "✕",
+        "hobby": "✕",
+        "professional": "✓",
+        "enterprise": "✓"
+      }
+    },
+    {
+      "feature": "Support Level",
+      "description": "Level of customer support provided.",
+       "values": {
+        "free": "Community",
+        "hobby": "Basic Email",
+        "professional": "Priority Email",
+        "enterprise": "Dedicated + Account Manager"
+      }
+    },
+    {
+      "feature": "Custom Base Templates",
+      "description": "Use custom templates for generating bridge code.",
+       "values": {
+        "free": "✕",
+        "hobby": "✕",
+        "professional": "✕",
+        "enterprise": "✓"
+      }
+    },
+    {
+      "feature": "Team Management & Roles",
+      "description": "Invite and manage team members with different permissions.",
+       "values": {
+        "free": "✕",
+        "hobby": "✕",
+        "professional": "✕",
+        "enterprise": "✓"
+      }
+    },
+    {
+      "feature": "Service Level Agreement (SLA)",
+      "description": "Guaranteed uptime and support response times.",
+      "values": {
+        "free": "✕",
+        "hobby": "✕",
+        "professional": "✕",
+        "enterprise": "✓"
+      }
+    },
+    {
+      "feature": "On-Premise Deployment Option",
+      "description": "Deploy Skolp within your own infrastructure.",
+       "values": {
+        "free": "✕",
+        "hobby": "✕",
+        "professional": "✕",
+        "enterprise": "✓"
+      }
+    },
+    {
+      "feature": "Custom Integrations",
+      "description": "Custom integrations with other services or tools.",
+       "values": {
+        "free": "✕",
+        "hobby": "✕",
+        "professional": "✕",
+        "enterprise": "✓"
+      }
     }
-  },
-  {
-    planName: "Hobby",
-    price: "$9",
-    priceFrequency: "/ month",
-    description: "Ideal for individual developers, students, and hobby projects.",
-    ctaLabel: "Choose Hobby",
-    ctaLink: process.env.NEXT_PUBLIC_APP_LOGIN_URL || "https://app.skolp.com/api/auth/login/github",
-    isPopular: false,
-    features: {
-      reposScanned: "5-10 public & private/month",
-      endpointsPerBridge: "25-30",
-      bridgeGenerations: "10/month",
-      privateRepos: true,
-      targetUrlConfig: "In Skolp UI",
-      history: "Last 5 generations",
-      customToolNames: false,
-      priorityGeneration: false,
-      support: "Basic Email",
-      customTemplates: false,
-      teamManagement: false,
-      sla: false,
-      onPremise: false,
-      customIntegrations: false,
-    }
-  },
-  {
-    planName: "Professional",
-    price: "$27",
-    priceFrequency: "/ month",
-    description: "For professional developers and small teams needing more power.",
-    ctaLabel: "Choose Pro",
-    ctaLink: process.env.NEXT_PUBLIC_APP_LOGIN_URL || "https://app.skolp.com/api/auth/login/github",
-    isPopular: true,
-    features: {
-      reposScanned: "25-50 public & private/month",
-      endpointsPerBridge: "75-100",
-      bridgeGenerations: "30-50/month",
-      privateRepos: true,
-      targetUrlConfig: "In Skolp UI",
-      history: "Last 30 configurations",
-      customToolNames: true,
-      priorityGeneration: true,
-      support: "Priority Email",
-      customTemplates: false,
-      teamManagement: false, // Basic Collaboration (Potential) - Keeping false for now
-      sla: false,
-      onPremise: false,
-      customIntegrations: false,
-    }
-  },
-  {
-    planName: "Enterprise",
-    price: "Custom",
-    priceFrequency: "",
-    description: "Tailored solutions for large organizations and complex requirements.",
-    ctaLabel: "Contact Sales",
-    ctaLink: "/contact",
-    isPopular: false,
-    features: {
-      reposScanned: "Custom/Unlimited",
-      endpointsPerBridge: "Custom/Unlimited",
-      bridgeGenerations: "Custom/Unlimited",
-      privateRepos: true,
-      targetUrlConfig: "In Skolp UI",
-      history: "Extended / Custom",
-      customToolNames: true,
-      priorityGeneration: true,
-      support: "Dedicated + Account Manager",
-      customTemplates: true,
-      teamManagement: true,
-      sla: true,
-      onPremise: true, // Potential
-      customIntegrations: true,
-    }
-  }
-];
+  ]
+};
 
-// Define the features to display in the table rows
-const featureRows = [
-  { key: 'price', label: 'Price' },
-  { key: 'reposScanned', label: 'Repositories Scanned' },
-  { key: 'endpointsPerBridge', label: 'Max Endpoints per Bridge' },
-  { key: 'bridgeGenerations', label: 'Bridge Generations' },
-  { key: 'privateRepos', label: 'Private Repository Support' },
-  { key: 'targetUrlConfig', label: 'Target API URL Configuration' },
-  { key: 'history', label: 'Generation History Access' },
-  { key: 'customToolNames', label: 'Customizable Tool Names' },
-  { key: 'priorityGeneration', label: 'Priority Generation Queue' },
-  { key: 'support', label: 'Support Level' },
-  { key: 'customTemplates', label: 'Custom Base Templates' },
-  { key: 'teamManagement', label: 'Team Management & Roles' },
-  { key: 'sla', label: 'Service Level Agreement (SLA)' },
-  { key: 'onPremise', label: 'On-Premise Deployment Option' },
-  { key: 'customIntegrations', label: 'Custom Integrations' },
-];
-
-// Helper to render feature value (Check/X for boolean, text otherwise)
-const renderFeatureValue = (value: string | boolean | undefined) => {
-  if (typeof value === 'boolean') {
-    return value ? <Check className="w-5 h-5 text-green-600 mx-auto" /> : <X className="w-5 h-5 text-red-500 mx-auto" />;
+// Helper to render feature value (Check/X icons or text)
+const renderFeatureValue = (value: string | undefined) => {
+  if (value === '✓') {
+    return <Check className="w-5 h-5 text-green-600 mx-auto" />;
   }
-  return value || '-'; // Display '-' if undefined or empty
+  if (value === '✕') {
+    return <X className="w-5 h-5 text-red-500 mx-auto" />;
+  }
+  // Handle multi-line values like price
+  if (typeof value === 'string' && value.includes(' / ')) {
+    const parts = value.split(' / ');
+    return (
+      <div className="font-semibold">
+        {parts[0]}
+        <span className="block text-xs font-normal text-muted-foreground">/ {parts[1]}</span>
+      </div>
+    );
+  } 
+   // Handle the special case for "$0 forever"
+  if (value === "$0 forever") {
+    return (
+      <div className="font-semibold">
+        $0
+        <span className="block text-xs font-normal text-muted-foreground">forever</span>
+      </div>
+    );
+  }
+  
+  return value || '-'; // Display text or '-' if undefined/empty
+};
+
+// Define CTA details based on plan name (assuming professional is popular)
+const popularPlan = "professional";
+const loginUrl = process.env.NEXT_PUBLIC_APP_LOGIN_URL || "https://app.skolp.com/api/auth/login/github";
+
+const getCtaDetails = (planName: string) => {
+  switch (planName) {
+    case 'free':
+      return { label: 'Get Started', link: loginUrl };
+    case 'hobby':
+      return { label: 'Choose Hobby', link: loginUrl };
+    case 'professional':
+      return { label: 'Choose Pro', link: loginUrl };
+    case 'enterprise':
+      return { label: 'Contact Sales', link: '/contact' };
+    default:
+      return { label: 'Learn More', link: '/' };
+  }
 };
 
 export default function PricingPage() {
@@ -152,51 +248,48 @@ export default function PricingPage() {
             </p>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200 border border-gray-200">
-              <thead className="bg-gray-50">
+          <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
+            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/4">
+                  <th scope="col" className="py-3 px-6 w-1/4">
                     Feature
                   </th>
-                  {pricingTiers.map((tier) => (
-                    <th key={tier.planName} scope="col" className={`px-6 py-3 text-center text-xs font-medium uppercase tracking-wider ${tier.isPopular ? 'text-primary' : 'text-gray-500'}`}>
-                      {tier.planName}
+                  {pricingData.plans.map((plan) => (
+                    <th key={plan} scope="col" className={`py-3 px-6 text-center capitalize ${plan === popularPlan ? 'text-primary' : ''}`}>
+                      {plan}
                     </th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {featureRows.map((feature) => (
-                  <tr key={feature.key} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {feature.label}
-                    </td>
-                    {pricingTiers.map((tier) => (
-                      <td key={`${tier.planName}-${feature.key}`} className={`px-6 py-4 whitespace-normal text-sm text-center ${tier.isPopular ? 'bg-primary/5' : ''}`}>
-                        {feature.key === 'price' 
-                          ? (
-                            <div className="font-semibold">
-                              {tier.price}
-                              {tier.priceFrequency && <span className="block text-xs font-normal text-muted-foreground">{tier.priceFrequency}</span>}
-                            </div>
-                          )
-                          : renderFeatureValue(tier.features[feature.key as keyof typeof tier.features])
-                        }
+              <tbody>
+                {pricingData.features.map((featureItem, index) => (
+                  <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      {featureItem.feature}
+                      {featureItem.description && <p className="text-xs font-normal text-gray-500 dark:text-gray-400 mt-1">{featureItem.description}</p>}
+                    </th>
+                    {pricingData.plans.map((plan) => (
+                      <td key={`${plan}-${index}`} className={`py-4 px-6 text-center ${plan === popularPlan ? 'bg-primary/5' : ''}`}>
+                        {renderFeatureValue(featureItem.values[plan as keyof typeof featureItem.values])}
                       </td>
                     ))}
                   </tr>
                 ))}
                 {/* CTA Row */}
-                <tr className="bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"></td>
-                  {pricingTiers.map((tier) => (
-                    <td key={`${tier.planName}-cta`} className={`px-6 py-4 text-center ${tier.isPopular ? 'bg-primary/10' : ''}`}>
-                      <Button asChild variant={tier.isPopular ? 'default' : 'outline'} size="sm">
-                        <Link href={tier.ctaLink}>{tier.ctaLabel}</Link>
-                      </Button>
-                    </td>
-                  ))}
+                <tr className="bg-white dark:bg-gray-800">
+                  <td className="py-4 px-6"></td>
+                  {pricingData.plans.map((plan) => {
+                    const cta = getCtaDetails(plan);
+                    const isPopular = plan === popularPlan;
+                    return (
+                      <td key={`${plan}-cta`} className={`py-4 px-6 text-center ${isPopular ? 'bg-primary/10' : ''}`}>
+                        <Button asChild variant={isPopular ? 'default' : 'outline'} size="sm">
+                          <Link href={cta.link}>{cta.label}</Link>
+                        </Button>
+                      </td>
+                    );
+                  })}
                 </tr>
               </tbody>
             </table>

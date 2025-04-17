@@ -7,7 +7,9 @@ import Image from 'next/image';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import PricingCard from "@/components/pricing-card";
-import { ArrowRight, Bot, CodeXml, Cpu } from "lucide-react"; // Import icons for logos
+// Removed unused Lucide icons: Bot, CodeXml, Cpu 
+import { ArrowRight } from "lucide-react"; 
+import HeroActions from "@/components/hero-actions";
 
 // type HomePageProps = {
 //   searchParams: Promise<{ 
@@ -115,10 +117,11 @@ export default function Home() {
     }
   ];
 
+   // Updated integrations array to use image paths
    const integrations = [
-    { name: "Claude", icon: Bot },
-    { name: "Cursor", icon: CodeXml },
-    { name: "Other MCP Clients", icon: Cpu },
+    { name: "Claude", imgSrc: "/claude-logo.png" },
+    { name: "Cursor", imgSrc: "/cursor-logo.png" },
+    { name: "Windsurf", imgSrc: "/windsurf-logo.png" },
     // Add more logos/placeholders as needed
   ];
 
@@ -126,8 +129,8 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       <LandingHeader />
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="container grid lg:grid-cols-2 place-items-center py-20 md:py-32 gap-10">
+        {/* Hero Section - Add bg-white */}
+        <section className="container grid lg:grid-cols-2 place-items-center py-20 md:py-32 gap-10 bg-white">
           <div className="text-center lg:text-start space-y-6">
             <main className="text-5xl md:text-6xl font-bold">
               <h1 className="leading-tight">
@@ -139,18 +142,7 @@ export default function Home() {
             <p className="text-xl text-muted-foreground md:w-10/12 mx-auto lg:mx-0">
               Skolp scans your API code, lets you select endpoints, and generates ready-to-use bridge packages for LLMs and agents.
             </p>
-            <div className="space-y-4 md:space-y-0 md:space-x-4">
-              <Button className="w-full md:w-1/3" asChild>
-                 <Link href={loginUrl}>
-                   <span>Get Started</span>
-                 </Link>
-              </Button>
-              <Button variant="outline" className="w-full md:w-1/3" asChild>
-                <Link href={appUrl}>
-                  <span>Launch App</span>
-                </Link>
-              </Button>
-            </div>
+            <HeroActions loginUrl={loginUrl} />
           </div>
 
           {/* Hero Image (Mascot) */}
@@ -202,19 +194,26 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Integrations Section - New */}
-        <section id="integrations" className="container py-24 sm:py-32 text-center">
+        {/* Integrations Section - Updated - Add bg-white */}
+        <section id="integrations" className="container py-24 sm:py-32 text-center bg-white">
           <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-            Connect Skolp to your <span className="text-primary">favorite LLMs</span>
+            Connect Skolp to your <span className="text-primary">favorite Tools</span> {/* Updated heading slightly */}
           </h2>
           <p className="text-xl text-muted-foreground mb-12">
             Seamlessly integrate with the most important tools your team uses.
           </p>
-          <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-8">
+          <div className="flex flex-wrap justify-center items-center gap-x-16 gap-y-8"> {/* Increased gap-x */}
             {integrations.map((integration) => (
-              <div key={integration.name} className="flex flex-col items-center space-y-2">
-                <integration.icon className="w-12 h-12 text-muted-foreground" /> 
-                <span className="text-sm font-medium text-muted-foreground">{integration.name}</span>
+              <div key={integration.name} className="flex flex-col items-center space-y-3"> {/* Increased space-y */}
+                <Image 
+                  src={integration.imgSrc}
+                  alt={`${integration.name} logo`}
+                  width={120} // Adjusted size for potentially wider logos
+                  height={48} // Kept height consistent (adjust as needed)
+                  className="object-contain" // Use contain to prevent stretching
+                />
+                {/* Optionally keep the name label if desired */}
+                {/* <span className="text-sm font-medium text-muted-foreground">{integration.name}</span> */}
               </div>
             ))}
           </div>

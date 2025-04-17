@@ -49,16 +49,12 @@ export default function LandingHeader() {
 
         {/* Right Actions */}
         <div className="flex flex-1 items-center justify-end space-x-4">
-          <Button variant="ghost" asChild>
-            {/* TODO: Update this link once app domain/auth path is known */}
-            <Link href={loginUrl}>Login</Link> 
-          </Button>
           <Button 
             asChild 
             className="bg-orange-400 hover:bg-orange-500 text-primary-foreground"
           >
             {/* TODO: Update this link once app domain is known */}
-            <Link href={appUrl}>Launch App</Link> 
+            <Link href={loginUrl}>Launch App</Link> 
           </Button>
         </div>
       </div>

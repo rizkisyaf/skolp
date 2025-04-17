@@ -85,8 +85,8 @@ export default function RootLayout({
         {/* Remove schema if not needed for landing page initially */}
         {/* <script ... /> */}
       </head>
-      {/* Apply light background and default text color from Tailwind config */}
-      <body className={`${inter.className} bg-background text-foreground`}>
+      {/* Let @layer base in globals.css handle background/foreground */}
+      <body className={inter.className}>
         {/* Optional: Wrap with ThemeProvider if adding dark mode later */}
         {/* <ThemeProvider attribute="class" defaultTheme="light"> */} 
           {children}
