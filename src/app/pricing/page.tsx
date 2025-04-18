@@ -216,7 +216,7 @@ const renderFeatureValue = (value: string | undefined) => {
 
 // Define CTA details based on plan name (assuming professional is popular)
 const popularPlan = "professional";
-const loginUrl = process.env.NEXT_PUBLIC_APP_LOGIN_URL || "https://app.skolp.com/api/auth/login/github";
+const loginUrl = process.env.NEXT_PUBLIC_APP_LOGIN_URL || "https://app.skolp.com/api/auth/callback/github";
 
 const getCtaDetails = (planName: string) => {
   switch (planName) {

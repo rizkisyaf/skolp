@@ -14,14 +14,14 @@ import { Youtube, Link as LinkIcon, Check as CheckIcon } from 'lucide-react';
 import Link from 'next/link';
 
 interface HeroActionsProps {
-  loginUrl: string;
+  getStartedUrl: string;
 }
 
 // Placeholder - Replace with your actual YouTube Video ID
 const YOUTUBE_VIDEO_ID = 'dQw4w9WgXcQ'; 
 const youtubeWatchUrl = `https://www.youtube.com/watch?v=${YOUTUBE_VIDEO_ID}`;
 
-export default function HeroActions({ loginUrl }: HeroActionsProps) {
+export default function HeroActions({ getStartedUrl }: HeroActionsProps) {
   const [isCopied, setIsCopied] = useState(false);
 
   const copyToClipboard = () => {
@@ -40,7 +40,7 @@ export default function HeroActions({ loginUrl }: HeroActionsProps) {
     <div className="space-y-4 md:space-y-0 md:space-x-4">
       {/* Get Started Button */}
       <Button className="w-full md:w-auto" asChild>
-        <Link href={loginUrl}>
+        <Link href={getStartedUrl}>
           <span>Get Started</span>
         </Link>
       </Button>

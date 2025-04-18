@@ -10,6 +10,9 @@ import PricingCard from "@/components/pricing-card";
 // Removed unused Lucide icons: Bot, CodeXml, Cpu 
 import { ArrowRight, Clock, Combine, Share2, MessagesSquare, TerminalSquare, Network, Puzzle, Quote, Rocket } from "lucide-react";
 import HeroActions from "@/components/hero-actions";
+import RepoScanVisual from "@/components/repo-scan-visual";
+import BridgeGenVisual from "@/components/bridge-gen-visual";
+import SelectiveExposureVisual from "@/components/selective-exposure-visual";
 import {
   Accordion,
   AccordionContent,
@@ -34,28 +37,38 @@ export default function Home() {
   //   notesToDisplay = getAllNoteMetadata();
   // }
 
-  // Use environment variables with fallbacks for production
-  const loginUrl = process.env.NEXT_PUBLIC_APP_LOGIN_URL || "https://app.skolp.com/api/auth/login/github";
-  // const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://app.skolp.com"; // No longer needed directly here
+  // Determine if in production
+  const isProduction = process.env.NODE_ENV === 'production';
 
-  // Pricing Data for Landing Page - Simplified & Synced with pricing page data
+  // Original URLs
+  const originalLoginUrl = process.env.NEXT_PUBLIC_APP_LOGIN_URL || "https://app.skolp.com/api/auth/login/github";
+  const waitlistUrl = "/waitlist";
+
+  // Conditional URLs
+  const getStartedUrl = isProduction ? waitlistUrl : originalLoginUrl;
+  const chooseHobbyUrl = isProduction ? waitlistUrl : originalLoginUrl;
+  const chooseProUrl = isProduction ? waitlistUrl : originalLoginUrl;
+  const finalCtaUrl = isProduction ? waitlistUrl : originalLoginUrl;
+  const enterpriseUrl = "/contact"; // Enterprise always goes to contact
+
+  // Pricing Data for Landing Page - Using conditional URLs
   const pricingTiers = [
     {
       planName: "Free",
-      price: "$0", // Simplified from '$0 forever'
-      description: "Try the core features.", // Simplified description
+      price: "$0", 
+      description: "Try the core features.",
       features: [
         "2 Public Repo Scans/Month",
         "Up to 50 Endpoints/Bridge",
         "3 Bridge Generations/Month",
         "Community Support"
       ],
-      ctaLabel: "Get Started", // Matches pricing page CTA
-      ctaLink: loginUrl // Matches pricing page CTA
+      ctaLabel: "Get Started", 
+      ctaLink: getStartedUrl // Conditional URL
     },
     {
       planName: "Hobby",
-      price: "$9", // Simplified from '$9 / month'
+      price: "$9", 
       description: "For individuals & hobbyists.",
       features: [
         "10 Repo Scans/Month",
@@ -64,12 +77,12 @@ export default function Home() {
         "10 Bridge Generations/Month",
         "Basic Email Support"
       ],
-      ctaLabel: "Choose Hobby", // Matches pricing page CTA
-      ctaLink: loginUrl // Matches pricing page CTA
+      ctaLabel: "Choose Hobby", 
+      ctaLink: chooseHobbyUrl // Conditional URL
     },
     {
       planName: "Professional",
-      price: "$27", // Simplified from '$27 / month'
+      price: "$27", 
       description: "For developers & small teams.",
       features: [
         "50 Repo Scans/Month",
@@ -79,13 +92,13 @@ export default function Home() {
         "Priority Generation Queue",
         "Priority Email Support"
       ],
-      ctaLabel: "Choose Pro", // Matches pricing page CTA
-      ctaLink: loginUrl, // Matches pricing page CTA
-      isPopular: true // Matches pricing page popular plan
+      ctaLabel: "Choose Pro", 
+      ctaLink: chooseProUrl, // Conditional URL
+      isPopular: true 
     },
     {
       planName: "Enterprise",
-      price: "Custom", // Matches pricing page
+      price: "Custom", 
       description: "For large organizations.",
       features: [
         "Custom Usage Limits",
@@ -94,8 +107,8 @@ export default function Home() {
         "Dedicated Support & SLA",
         "On-Premise Option"
       ],
-      ctaLabel: "Contact Sales", // Matches pricing page CTA
-      ctaLink: "/contact" // Matches pricing page CTA for enterprise
+      ctaLabel: "Contact Sales", 
+      ctaLink: enterpriseUrl // Always contact
     }
   ];
 
@@ -103,17 +116,17 @@ export default function Home() {
     {
       title: "Unlock Existing APIs for AI",
       description: "Connect any API (local, staging, production) to LLMs and agents instantly. No code rewrites needed.",
-      visual: "Visual Placeholder 1"
+      visual: <RepoScanVisual />
     },
     {
       title: "Generate Bridges in Seconds",
       description: "Scan your repository, select endpoints, and Skolp automatically generates the necessary stdio bridge package and MCP config.",
-      visual: "Visual Placeholder 2"
+      visual: <BridgeGenVisual />
     },
     {
       title: "Secure & Selective Exposure",
       description: "Choose exactly which API endpoints to expose as tools, keeping sensitive functions private and simplifying agent interactions.",
-      visual: "Visual Placeholder 3"
+      visual: <SelectiveExposureVisual />
     }
   ];
 
@@ -207,7 +220,7 @@ export default function Home() {
             <p className="text-xl text-muted-foreground md:w-10/12 mx-auto lg:mx-0">
               Turn your backend into an LLM-ready MCP server in minutes. No DevOps, no lock-in.
             </p>
-            <HeroActions loginUrl={loginUrl} />
+            <HeroActions getStartedUrl={getStartedUrl} />
           </div>
 
           {/* Hero Image (Mascot) */}
@@ -373,7 +386,7 @@ export default function Home() {
               Stop rebuilding, start bridging. Generate your first MCP tool server in minutes.
             </p>
             <Button size="lg" variant="secondary" asChild className="bg-primary-foreground text-primary hover:bg-primary-foreground/90">
-              <Link href={loginUrl}>
+              <Link href={finalCtaUrl}>
                 Start Free Now (No Credit Card Required)
               </Link>
             </Button>

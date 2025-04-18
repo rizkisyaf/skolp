@@ -14,9 +14,16 @@ export default function LandingHeader() {
     { href: "/docs/introduction", label: "Docs", target: "_blank" },
   ];
 
-  // Point to skolp-app for login/launch - Use environment variables
-  const loginUrl = process.env.NEXT_PUBLIC_APP_LOGIN_URL || "https://app.skolp.com/api/auth/login/github"; 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://app.skolp.com"; 
+  // Determine if in production
+  const isProduction = process.env.NODE_ENV === 'production';
+
+  // Original URLs
+  const originalLoginUrl = process.env.NEXT_PUBLIC_APP_LOGIN_URL || "https://app.skolp.com/api/auth/login/github"; // Changed back to login endpoint
+  const waitlistUrl = "/waitlist";
+
+  // Conditional URL for the main header button
+  const headerActionUrl = isProduction ? waitlistUrl : originalLoginUrl;
+  const headerActionLabel = isProduction ? "Join Waitlist" : "Launch App"; // Change label too
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -47,14 +54,13 @@ export default function LandingHeader() {
           ))}
         </nav>
 
-        {/* Right Actions */}
+        {/* Right Actions - Use conditional URL and Label */}
         <div className="flex flex-1 items-center justify-end space-x-4">
           <Button 
             asChild 
             className="bg-orange-400 hover:bg-orange-500 text-primary-foreground"
           >
-            {/* TODO: Update this link once app domain is known */}
-            <Link href={loginUrl}>Launch App</Link> 
+            <Link href={headerActionUrl}>{headerActionLabel}</Link> 
           </Button>
         </div>
       </div>
